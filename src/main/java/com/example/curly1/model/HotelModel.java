@@ -14,7 +14,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "hotel")
-public class HotelModel  {
+public class HotelModel implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -33,7 +33,7 @@ public class HotelModel  {
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "city_info_id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
-    @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
+    @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "cityId")
     @JsonIdentityReference(alwaysAsId = true)
     @JsonProperty("city_info_id")
     private CityInfoModel cityInfoModel;
@@ -86,4 +86,5 @@ public class HotelModel  {
     public void setCityInfoModel(CityInfoModel cityInfoModel) {
         this.cityInfoModel = cityInfoModel;
     }
+
 }

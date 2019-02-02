@@ -7,7 +7,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "user")
-public class UserModel {
+public class UserModel implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -75,5 +75,13 @@ public class UserModel {
 
     public void setUserPassword(String userPassword) {
         this.userPassword = userPassword;
+    }
+
+    public Set<HotelModel> getHotels() {
+        return hotels;
+    }
+
+    public void setHotels(Set<HotelModel> hotels) {
+        this.hotels = hotels;
     }
 }
