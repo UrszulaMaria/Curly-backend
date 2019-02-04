@@ -14,9 +14,14 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 @RestController
-@RequestMapping("/user")
+@RequestMapping
 public class UserController {
+
+    private static final Logger logger = LoggerFactory.getLogger(UserController.class);
 
     @Autowired
     UserRepository userRepository;
@@ -41,19 +46,48 @@ public class UserController {
         return userRepository.save(userModel);
     }
 
-    @PutMapping("/editUser/{id}")
-    public UserModel updateUser(@PathVariable(value = "id") Long userId,
-                                @Valid @RequestBody UserModel userModel) {
-        UserModel newUser = userRepository.findById(userId)
-                .orElseThrow(() -> new ResourceNotFoundException("User" + "id" + userId));
+    @GetMapping("/addNewUserAsParam")
+    public ResponseEntity<?> add2(@RequestParam(value = "userName") String name,
+                                  @RequestParam(value = "last") String last,
+                                  @RequestParam(value = "password") String pass,
+                                  @RequestParam(value = "mail") String mail){
 
-        newUser.setUserName(userModel.getUserName());
-        newUser.setUserLastName(userModel.getUserLastName());
-        newUser.setUserEmail(userModel.getUserEmail());
-        newUser.setUserPassword(userModel.getUserPassword());
-
-        return userRepository.save(newUser);
+        UserModel newUser=new UserModel(name,last,mail,pass);
+        userRepository.save(newUser);
+        return ResponseEntity.ok().body("Succes!");
     }
+
+    @GetMapping("/editUser")
+    public ResponseEntity<?> updateUser(@PathVariable(value = "idUser") String userId,
+                                @PathVariable(value = "userName") String name,
+                                @PathVariable(value = "last") String last,
+                                @PathVariable(value = "password") String pass,
+                                @PathVariable(value = "mail") String mail) {
+
+        Long newUserId=Long.valueOf(userId);
+        UserModel newUser = userRepository.findById(newUserId)
+                .orElseThrow(() -> new ResourceNotFoundException("User" + "id" + newUserId));
+
+        newUser.setUserName(name);
+        newUser.setUserLastName(last);
+        newUser.setUserEmail(mail);
+        newUser.setUserPassword(pass);
+
+        return ResponseEntity.ok().body("Succes");
+    }
+//    @PutMapping("/editUser/{id}")
+//    public UserModel updateUser(@PathVariable(value = "id") Long userId,
+//                                @Valid @RequestBody UserModel userModel) {
+//        UserModel newUser = userRepository.findById(userId)
+//                .orElseThrow(() -> new ResourceNotFoundException("User" + "id" + userId));
+//
+//        newUser.setUserName(userModel.getUserName());
+//        newUser.setUserLastName(userModel.getUserLastName());
+//        newUser.setUserEmail(userModel.getUserEmail());
+//        newUser.setUserPassword(userModel.getUserPassword());
+//
+//        return userRepository.save(newUser);
+//    }
 
     @DeleteMapping("/deleteUser/{userId}")
     public ResponseEntity<?> deleteUser(@PathVariable(value = "userId") Long userId) {
@@ -82,17 +116,15 @@ public class UserController {
         UserModel userModel = userRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException("User" + "id" + userId));
 
 
-        Set<HotelModel> newSet=new HashSet<>();
+        Set<HotelModel> newSet = new HashSet<>();
 
-        hotelRepository.findById(hotelId).map(hotel->{
+        hotelRepository.findById(hotelId).map(hotel -> {
             newSet.add(hotel);
             userModel.setHotels(newSet);
             return hotelRepository.save(hotel);
-        }).orElseThrow(()->new ResourceNotFoundException("Hotel " + "id" + hotelId));
+        }).orElseThrow(() -> new ResourceNotFoundException("Hotel " + "id" + hotelId));
 
         return ResponseEntity.ok().body("Succes!");
 
     }
-
-
 }

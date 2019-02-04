@@ -5,6 +5,7 @@ import com.example.curly1.model.CityInfoModel;
 import com.example.curly1.repository.CityInfoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -18,26 +19,30 @@ public class CityInfoController {
     CityInfoRepository cityInfoRepository;
 
     @GetMapping("/showAllCity")
-    public List<CityInfoModel> findAll(){
+    public List<CityInfoModel> findAll(ModelMap modelMap) {
+        modelMap.put("miasta", cityInfoRepository.findAll().toString());
         return cityInfoRepository.findAll();
     }
 
     @GetMapping("/fingOne/{id}")
-    public CityInfoModel findOneById(@PathVariable(value = "id") Long cityId){
+    public CityInfoModel findOneById(@PathVariable(value = "id") Long cityId) {
         return cityInfoRepository.findById(cityId)
-                .orElseThrow(()->new ResourceNotFoundException("City"+"id"+cityId));
+                .orElseThrow(() -> new ResourceNotFoundException("City" + "id" + cityId));
     }
 
-    @PostMapping("/addNewCity")
-    public CityInfoModel addCity(@Valid @RequestBody CityInfoModel cityInfoModel){
-        return cityInfoRepository.save(cityInfoModel);
+    @GetMapping("/addNewCity")
+    public ResponseEntity<?> addCity(@RequestParam(value = "cityName") String city,
+                                     @RequestParam(value = "countryName") String country) {
+        CityInfoModel newCity = new CityInfoModel(city, country);
+        cityInfoRepository.save(newCity);
+        return ResponseEntity.ok().body("Succes!");
     }
 
     @PutMapping("/updateCity/{id}")
     public CityInfoModel updateCity(@PathVariable(value = "id") Long cityId,
-                                    @Valid @RequestBody CityInfoModel cityInfoModel){
-        CityInfoModel newCity =cityInfoRepository.findById(cityId)
-                .orElseThrow(()->new ResourceNotFoundException("City"+"id"+cityId));
+                                    @Valid @RequestBody CityInfoModel cityInfoModel) {
+        CityInfoModel newCity = cityInfoRepository.findById(cityId)
+                .orElseThrow(() -> new ResourceNotFoundException("City" + "id" + cityId));
 
         newCity.setCityName(cityInfoModel.getCityName());
         newCity.setCountryName(cityInfoModel.getCountryName());
@@ -45,9 +50,10 @@ public class CityInfoController {
         return cityInfoRepository.save(newCity);
     }
 
-    public ResponseEntity<?> deleteCity(@PathVariable(value = "id")Long cityId){
-        CityInfoModel cityInfoModel=cityInfoRepository.findById(cityId)
-                .orElseThrow(()->new ResourceNotFoundException("City"+"id"+cityId));
+    @DeleteMapping("/deleteCity/{id}")
+    public ResponseEntity<?> deleteCity(@PathVariable(value = "id") Long cityId) {
+        CityInfoModel cityInfoModel = cityInfoRepository.findById(cityId)
+                .orElseThrow(() -> new ResourceNotFoundException("City" + "id" + cityId));
 
         cityInfoRepository.delete(cityInfoModel);
 

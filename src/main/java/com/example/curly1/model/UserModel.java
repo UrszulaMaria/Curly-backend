@@ -36,6 +36,15 @@ public class UserModel implements Serializable {
     )
     private Set<HotelModel> hotels = new HashSet<>();
 
+    public UserModel() {
+    }
+
+    public UserModel(String userName, String userLastName, String userEmail, String userPassword) {
+        this.userName = userName;
+        this.userLastName = userLastName;
+        this.userEmail = userEmail;
+        this.userPassword = userPassword;
+    }
 
     public Long getUserId() {
         return userId;

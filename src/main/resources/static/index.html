@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Strona główna</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://fonts.googleapis.com/css?family=Courgette" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" type="text/javascript" ></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
+    <link href="Styles/style.css" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="Scripts/script.js" ></script>
+    <script type="text/javascript" src="Scripts/countries.js" ></script>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
+  </head>
+  <body>
+
+    <div class="nav-bar">
+      <div class="logo"></div>
+      <div class="nav-bar-item active" onclick="openTab(event, 'travel')">Podróż</div>
+      <div class="nav-bar-item" onclick="openTab(event, 'base')">Baza</div>
+      <div class="nav-bar-item" onclick="openTab(event, 'contact')">Kontakt</div>
+
+      <div class="right-icons" style="float: right">
+        <div class="search">
+          <input type="text" name="search" class="search-form" placeholder="Wyszukaj" autocomplete="off" />
+          <a href="#search"><i class="fas fa-search fa-lg"></i></a>
+        </div>
+
+        <a href="add.html" class="add-button">
+          <i class="fas fa-plus fa-lg"></i>
+          <p class="button-text">Dodaj</p>
+        </a>
+
+        <a href="create.html" class="login-button">
+          <i class="far fa-user fa-lg"></i>
+          <p class="button-text">Użytkownik</p>
+        </a>
+      </div>
+      <div class="blue-stripe"></div>
+    </div>
+
+    <div id="travel" class="tab" >
+      <p> travel </p>
+      <div id="display"></div>
+    </div>
+    <div id="base" class="tab" style="display:none">
+      <div class="wrapper">
+
+        <ul class="bc">
+          <li >BAZA</li>
+          <li id="bc-item" style="font-size: 14px">Cele podróży</li>
+        </ul>
+
+        <div class="buttons">
+          <button onclick="openForm(event, 'trip')" class="button form-button button-active">
+            <i class="fas fa-globe-americas fa-lg"></i>
+            Wyjazdy
+          </button>
+          <button onclick="openForm(event, 'trip-filter')" class="button form-button">
+            <i class="fas fa-user fa-md"></i>
+            Użytkownicy
+          </button>
+        </div>
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col-md-6 col-xs-12">
+              <div class="form-container" id="trip-filter" style="display: none">
+                <!--
+                <div class="selected" onclick="openList(event, 'continents')">Kontynent</div>
+                <ul id="continents" class="select-list">
+                  <li value="Ameryka Południowa">Ameryka Południowa</li>
+                  <li value="Ameryka Północna">Ameryka Północna</li>
+                  <li value="Australia">Australia</li>
+                  <li value="Azja">Azja</li>
+                  <li value="Europa">Europa</li>
+                </ul>
+
+                <div class="selected" onclick="openList(event, 'countries')">Państwo</div>
+                <ul id="countries" class="select-list">
+                  <li class="active">Austria</li>
+                  <li>Włochy</li>
+                  <li>Anglia</li>
+                  <li>Francja</li>
+                  <li>Chile</li>
+                  <li>Meksyk</li>
+                </ul>
+
+                <div class="selected" onclick="openList(event, 'cities')">Miasto</div>
+                <ul id="cities" class="select-list">
+                  <li class="active">Austria</li>
+                  <li>Londyn</li>
+                  <li>Paryż</li>
+                  <li>Czarnobyl</li>
+                  <li>Santiago</li>
+                  <li>Nowy Jork</li>
+                </ul>
+
+                <div class="button-bottom">
+                  <input type="submit" value="Szukaj" class="button" />
+                </div>-->
+              </div>
+
+              <div class="form-container" id="trip">
+                <div id="display-trips"></div>
+              </div>
+
+            </div>
+            <div class="col-md-6 col-12">
+              <div id="mapdiv"></div>
+                <script src="http://www.openlayers.org/api/OpenLayers.js"></script>
+                <script>
+                  map = new OpenLayers.Map("mapdiv");
+                  map.addLayer(new OpenLayers.Layer.OSM());
+                  var lonLat = new OpenLayers.LonLat(-0.1279688, 51.5077286)
+                    .transform(
+                      new OpenLayers.Projection("EPSG:4326"), // transform from WGS 1984
+                      map.getProjectionObject() // to Spherical Mercator Projection
+                    );
+                  var zoom = 10;
+                  var markers = new OpenLayers.Layer.Markers("Markers");
+                  map.addLayer(markers);
+                  markers.addMarker(new OpenLayers.Marker(lonLat));
+                  map.setCenter(lonLat, zoom);
+                </script>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="contact" class="tab" style="display:none">
+      <div class="wrapper">
+        <img src="patience.jpg" style="margin: 0 auto; display:block"/>
+      </div>
+    </div>
+  </body>
+</html>

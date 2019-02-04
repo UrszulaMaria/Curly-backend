@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="pl-PL">
+  <head>
+    <meta charset="UTF-8">
+    <title>Zakładanie konta</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="Styles/style-account.css" rel="stylesheet" type="text/css" />
+    <link href="https://fonts.googleapis.com/css?family=Courgette" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" type="text/javascript" ></script>
+    <script type="text/javascript" src="Scripts/script.js" ></script>
+  </head>
+  <body>
+    <div class="wrapper">
+      <div class="create-box">
+        <h1 class="header">Tworzenie konta w Curly</h1>
+
+        <form name="create" action="/addNewUserAsParam" onsubmit="return myFunction()">
+          <div class="text-box double">
+            <p class="text-box-effect">imię</p>
+            <input type="text" id="fname" name="userName" class="input-form" autocomplete="off" />
+          </div>
+          <div class="text-box double">
+            <p class="text-box-effect">nazwisko</p>
+            <input type="text" name="last" class="input-form" autocomplete="off" style="width: 300px" />
+          </div>
+          <!--<br />
+          <div class="text-box single">
+            <p class="text-box-effect">nazwa użytkownika</p>
+            <input type="text" name="username" class="input-form" autocomplete="off" style="width: 300px" />
+          </div>
+          <div class="create-info">
+            Możesz użyć liter i cyfr
+          </div>-->
+          <br />
+          <div class="text-box single">
+            <p class="text-box-effect">e-mail</p>
+            <input type="text" name="mail" class="input-form" autocomplete="off"style="width: 350px"  />
+          </div>
+          <br />
+          <div class="text-box double">
+            <p class="text-box-effect">hasło</p>
+            <input type="password" name="password" class="input-form" autocomplete="off" style="width: 200px" />
+          </div>
+          <!--<div class="text-box double">
+            <p class="text-box-effect">potwierdź hasło</p>
+            <input type="password" name="username" class="input-form" autocomplete="off" style="width: 200px" />
+          </div>-->
+          <div class="create-info" style="transform: translate(0,6px)">
+            Musisz użyć <br />co najmniej 8 znaków
+          </div>
+          <div class="buttons">
+              <input type="submit" value="Utwórz" class="button" />
+          </div>
+        </form>
+      </div>
+    </div>
+  </body>
+</html>

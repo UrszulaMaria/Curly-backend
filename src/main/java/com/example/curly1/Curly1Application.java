@@ -8,9 +8,11 @@ import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 @EnableJpaAuditing
 public class Curly1Application {
 
+
     public static void main(String[] args) {
         SpringApplication.run(Curly1Application.class, args);
     }
+
 
 }
 

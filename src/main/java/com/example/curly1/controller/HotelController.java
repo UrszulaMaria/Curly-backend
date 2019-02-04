@@ -4,6 +4,8 @@ import com.example.curly1.exception.ResourceNotFoundException;
 import com.example.curly1.model.HotelModel;
 import com.example.curly1.repository.CityInfoRepository;
 import com.example.curly1.repository.HotelRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -15,7 +17,7 @@ import javax.validation.Valid;
 @RestController
 @RequestMapping("/hotel")
 public class HotelController {
-
+    private static final Logger logger= LoggerFactory.getLogger(HotelController.class);
     @Autowired
     HotelRepository hotelRepository;
 
@@ -25,6 +27,13 @@ public class HotelController {
     @GetMapping("/getHotel/{id}/hotels")
     public Page<HotelModel> getAllHotels(@PathVariable(value = "id") Long cityId, Pageable pageable) {
         return hotelRepository.findByCityInfoModelCityId(cityId, pageable);
+    }
+
+    @GetMapping("/test/gethotel")
+    public Page<HotelModel> gethotels(@RequestParam(value = "cityid") String id, Pageable pageable){
+        logger.error("ID\t"+id);
+
+        return hotelRepository.findByCityInfoModelCityId(Long.valueOf(id),pageable);
     }
 
     @PostMapping("/addNewHotel/{id}")

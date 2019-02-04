@@ -18,6 +18,13 @@ public class CityInfoModel implements Serializable {
     @Column(name = "country_name")
     private String countryName;
 
+    public CityInfoModel() {
+    }
+
+    public CityInfoModel(String cityName, String countryName) {
+        this.cityName = cityName;
+        this.countryName = countryName;
+    }
 
     public Long getCityId() {
         return cityId;
