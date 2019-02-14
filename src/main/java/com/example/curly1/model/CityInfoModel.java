@@ -18,6 +18,7 @@ public class CityInfoModel implements Serializable {
     @Column(name = "country_name")
     private String countryName;
 
+
     public CityInfoModel() {
     }
 

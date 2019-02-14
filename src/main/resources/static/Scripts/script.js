@@ -1,3 +1,92 @@
+var isMapVisible = false;
+var isTripFormVisible = false;
+var isUserFormVisible = false;
+
+var miasto;
+var panstwo;
+
+var identyfikator=new Array();
+var nazwaMiasta=new Array();
+var nazwaPanstwa=new Array();
+
+// === miasta i kraje ===
+var url = 'http://localhost:1234/city/showAllCity';
+
+// Replace ./data.json with your JSON feed
+fetch(url).then(response => {
+  return response.json();
+}).then(data => {
+  var json = JSON.stringify(data);
+json=JSON.parse(json);
+var dlugosc=json.length;
+dlugosc=JSON.stringify(dlugosc);
+
+
+//for do tworzenia tablic
+for(var i=0;i<dlugosc;i++){
+  var tmpId=json[i].cityId;
+  var tmpCity=json[i].cityName;
+  var tmpCountry=json[i].countryName;
+
+  tmpId=JSON.stringify(tmpId);
+  tmpCity=JSON.stringify(tmpCity);
+  tmpCountry=JSON.stringify(tmpCountry);
+
+  identyfikator.push(tmpId);
+  nazwaMiasta.push(tmpCity);
+  nazwaPanstwa.push(tmpCountry);
+}
+}).catch(err => {
+  document.getElementById('display-trips').innerHTML = "Coś poszło nie tak!";
+});
+
+// === uzytkownicy ===
+
+var userId=new Array();
+var userName=new Array();
+var userLast=new Array();
+var userMail=new Array();
+
+var url = 'http://localhost:1234/getAllUsers';
+
+// Replace ./data.json with your JSON feed
+fetch(url).then(response => {
+  return response.json();
+}).then(data => {
+  var json = JSON.stringify(data);
+json=JSON.parse(json);
+var dlugosc=json.length;
+dlugosc=JSON.stringify(dlugosc);
+
+var userId=new Array();
+var userName=new Array();
+var userLast=new Array();
+var userMail=new Array();
+
+
+
+//for do tworzenia tablic
+for(var i=0;i<dlugosc;i++){
+  var tmpUserId=json[i].userId;
+  var tmpName=json[i].userName;
+  var tmpLast=json[i].userLastName;
+  var tmpMail=json[i].userEmail;
+
+  tmpUserId=JSON.stringify(tmpUserId);
+  tmpName=JSON.stringify(tmpName);
+  tmpLast=JSON.stringify(tmpLast);
+  tmpMail=JSON.stringify(tmpMail);
+
+  userId.push(tmpId);
+  userName.push(tmpName);
+  userLast.push(tmpLast);
+  userMail.push(tmpMail);
+
+}
+
+}).catch(err => {
+  document.getElementById('display-users').innerHTML = 'Coś poszło nie tak!';
+});
 
 $(document).ready(function() {
 
@@ -53,7 +142,44 @@ function openTab(e, tabName) {
 
   document.getElementById(tabName).style.display = "block";
   e.currentTarget.className += ' active';
+
+  if(tabName == 'base'){
+
+    if(!isMapVisible) {
+      map = new OpenLayers.Map("mapdiv");
+      map.addLayer(new OpenLayers.Layer.OSM());
+      var lonLat = new OpenLayers.LonLat(-0.1279688, 51.5077286)
+          .transform(
+              new OpenLayers.Projection("EPSG:4326"), // transform from WGS 1984
+              map.getProjectionObject() // to Spherical Mercator Projection
+          );
+      var zoom = 10;
+      var markers = new OpenLayers.Layer.Markers("Markers");
+      map.addLayer(markers);
+      markers.addMarker(new OpenLayers.Marker(lonLat));
+      map.setCenter(lonLat, zoom);
+
+      isMapVisible = true;
+    }
+
+    if(!isTripFormVisible){
+
+      var string = "";
+
+      for(var i=0;i<nazwaMiasta.length;i++){
+        var s = "<tr><td>" + nazwaMiasta[i]+"</td><td>" + nazwaPanstwa[i]+ "</td></tr>";
+        string += s;
+      }
+
+      string = "<table style='width:100%'><tr><th>Miasto</th><th>Państwo</th></tr>" + string + "</table>";
+      document.getElementById('display-trips').innerHTML = string ;
+
+      isTripTabVisible = true;
+    }
+  }
 }
+
+
 
 //wybór formularza
 function openForm(e, formName) {
@@ -72,14 +198,34 @@ function openForm(e, formName) {
     document.getElementById('bc-item').innerHTML = "Cele podróży";
   }
 
-  if(formName == 'trip-filter') {
+  if(formName == 'user') {
     document.getElementById('bc-item').innerHTML = "Użytkownicy";
+
+    if(!isUserFormVisible){
+
+      var string = "";
+
+      for(var i=0;i<userName.length;i++){
+        var s = "<tr><td>" + userName[i]+"</td><td>" + userLast[i]+ "</td><td>" + userMail[i]+ "</td></tr>";
+        string += s;
+      }
+
+      string = "<table style='width:100%'><tr><th>Imię</th><th>Nazwisko</th> <th>E-mail</th></tr>" + string + "</table>";
+      document.getElementById('display-users').innerHTML = string ;
+
+      isUserFormVisible = true;
+    }
+
   }
+
 
   document.getElementById(formName).style.display = "block";
   e.currentTarget.className += ' button-active';
 }
 
+
+
+/*
 //listy wyboru
 function openList(e, listName) {
 
@@ -91,4 +237,4 @@ function openList(e, listName) {
 
   $('#'+listName).slideToggle('fast');
   e.currentTarget.className += ' active';
-}
+*/

@@ -57,37 +57,37 @@ public class UserController {
         return ResponseEntity.ok().body("Succes!");
     }
 
-    @GetMapping("/editUser")
-    public ResponseEntity<?> updateUser(@PathVariable(value = "idUser") String userId,
-                                @PathVariable(value = "userName") String name,
-                                @PathVariable(value = "last") String last,
-                                @PathVariable(value = "password") String pass,
-                                @PathVariable(value = "mail") String mail) {
-
-        Long newUserId=Long.valueOf(userId);
-        UserModel newUser = userRepository.findById(newUserId)
-                .orElseThrow(() -> new ResourceNotFoundException("User" + "id" + newUserId));
-
-        newUser.setUserName(name);
-        newUser.setUserLastName(last);
-        newUser.setUserEmail(mail);
-        newUser.setUserPassword(pass);
-
-        return ResponseEntity.ok().body("Succes");
-    }
-//    @PutMapping("/editUser/{id}")
-//    public UserModel updateUser(@PathVariable(value = "id") Long userId,
-//                                @Valid @RequestBody UserModel userModel) {
-//        UserModel newUser = userRepository.findById(userId)
-//                .orElseThrow(() -> new ResourceNotFoundException("User" + "id" + userId));
+//    @GetMapping("/editUser")
+//    public ResponseEntity<?> updateUser(@PathVariable(value = "idUser") String userId,
+//                                @PathVariable(value = "userName") String name,
+//                                @PathVariable(value = "last") String last,
+//                                @PathVariable(value = "password") String pass,
+//                                @PathVariable(value = "mail") String mail) {
 //
-//        newUser.setUserName(userModel.getUserName());
-//        newUser.setUserLastName(userModel.getUserLastName());
-//        newUser.setUserEmail(userModel.getUserEmail());
-//        newUser.setUserPassword(userModel.getUserPassword());
+//        Long newUserId=Long.valueOf(userId);
+//        UserModel newUser = userRepository.findById(newUserId)
+//                .orElseThrow(() -> new ResourceNotFoundException("User" + "id" + newUserId));
 //
-//        return userRepository.save(newUser);
+//        newUser.setUserName(name);
+//        newUser.setUserLastName(last);
+//        newUser.setUserEmail(mail);
+//        newUser.setUserPassword(pass);
+//
+//        return ResponseEntity.ok().body("Succes");
 //    }
+    @PutMapping("/editUser/{id}")
+    public UserModel updateUser(@PathVariable(value = "id") Long userId,
+                                @Valid @RequestBody UserModel userModel) {
+        UserModel newUser = userRepository.findById(userId)
+                .orElseThrow(() -> new ResourceNotFoundException("User" + "id" + userId));
+
+        newUser.setUserName(userModel.getUserName());
+        newUser.setUserLastName(userModel.getUserLastName());
+        newUser.setUserEmail(userModel.getUserEmail());
+        newUser.setUserPassword(userModel.getUserPassword());
+
+        return userRepository.save(newUser);
+    }
 
     @DeleteMapping("/deleteUser/{userId}")
     public ResponseEntity<?> deleteUser(@PathVariable(value = "userId") Long userId) {
