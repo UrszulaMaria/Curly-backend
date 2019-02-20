@@ -167,7 +167,7 @@ function openTab(e, tabName) {
       var string = "";
 
       for(var i=0;i<nazwaMiasta.length;i++){
-        var s = '<tr><td><a href="https://pl.wikipedia.org/wiki/' + nazwaMiasta[i] + '">' + nazwaMiasta[i]+'</a></td><td><a href="https://pl.wikipedia.org/wiki/' + nazwaPanstwa[i] + '">' + nazwaPanstwa[i]+ "</a></td></tr>";
+        var s = "<tr><td>" + nazwaMiasta[i]+"</td><td>" + nazwaPanstwa[i]+ "</td></tr>";
         string += s;
       }
 
